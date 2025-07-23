@@ -11,16 +11,12 @@ node {
 
         stage('Build Project') {
             echo "Building project with Maven..."
-            dir('Assigenment-CI-CD-Pipline') {
-                sh "'${mvnHome}/bin/mvn' clean package -DskipTests"
-            }
+            sh "'${mvnHome}/bin/mvn' clean package -DskipTests"
         }
 
         stage('Build Docker Image') {
             echo "Building Docker image..."
-            dir('Assigenment-CI-CD-Pipline') {
-                dockerImage = docker.build(dockerImageTag)
-            }
+            dockerImage = docker.build(dockerImageTag)
         }
 
         stage('Login to DockerHub') {
@@ -33,7 +29,6 @@ node {
             sh "docker tag ${dockerImageTag} rajv690/myapplication:${env.BUILD_NUMBER}"
             sh "docker push rajv690/myapplication:${env.BUILD_NUMBER}"
         }
-
 
     } catch (err) {
         currentBuild.result = 'FAILURE'
